@@ -214,7 +214,7 @@ export function HomeScreen() {
         >
           Основные разделы
         </h2>
-        <div className="grid grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-3 gap-2">
           {sections.map(({ label, icon: Icon, to }) => (
             <Link
               key={label}
