@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { Section } from "@/components/Section";
-import { Bell, Lock, HelpCircle, LogOut, ChevronRight, GraduationCap, FlaskConical, Building2, MapPin } from "lucide-react";
+import { Bell, Lock, HelpCircle, LogOut, ChevronRight, GraduationCap, FlaskConical, Building2, MapPin, FileText } from "lucide-react";
+import { useDocuments, docProgress } from "@/lib/documents-store";
 
 const langs = [
   { id: "ru", label: "Русский" },
@@ -12,6 +13,8 @@ const langs = [
 
 export function ProfileScreen() {
   const [lang, setLang] = useState("ru");
+  const docs = useDocuments();
+  const { done, total, percent } = docProgress(docs);
 
   return (
     <div className="space-y-6">
@@ -43,6 +46,30 @@ export function ProfileScreen() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Documents progress */}
+      <div className="px-5">
+        <Link
+          to="/documents"
+          className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4"
+          style={{ boxShadow: "var(--shadow-soft)" }}
+        >
+          <span className="flex h-11 w-11 items-center justify-center rounded-xl" style={{ background: "var(--color-accent)", color: "var(--color-primary)" }}>
+            <FileText className="h-5 w-5" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center justify-between">
+              <p className="text-[13px] font-bold text-foreground">Документы</p>
+              <p className="text-[12px] font-bold text-primary">{percent}%</p>
+            </div>
+            <p className="text-[11px] text-muted-foreground">{done} из {total} загружено</p>
+            <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-secondary">
+              <div className="h-full rounded-full transition-all" style={{ width: `${percent}%`, background: "var(--gradient-primary)" }} />
+            </div>
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        </Link>
       </div>
 
       <Section title="Язык интерфейса">
